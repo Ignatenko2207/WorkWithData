@@ -1,8 +1,6 @@
 package it.dan.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ConnectionToDB
 {
@@ -24,5 +22,56 @@ public class ConnectionToDB
 		}
 
 		return connection;
+	}
+
+	protected static void closeConnection(PreparedStatement statement, Connection connection)
+	{
+		try
+		{
+			statement.close();
+		}
+		catch ( SQLException e )
+		{
+			e.printStackTrace();
+		}
+
+		try
+		{
+			connection.close();
+		}
+		catch ( SQLException e )
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public static void closeConnection(ResultSet rSet, PreparedStatement statement, Connection connection)
+	{
+		try
+		{
+			rSet.close();
+		}
+		catch ( SQLException e )
+		{
+			e.printStackTrace();
+		}
+
+		try
+		{
+			statement.close();
+		}
+		catch ( SQLException e )
+		{
+			e.printStackTrace();
+		}
+
+		try
+		{
+			connection.close();
+		}
+		catch ( SQLException e )
+		{
+			e.printStackTrace();
+		}
 	}
 }
