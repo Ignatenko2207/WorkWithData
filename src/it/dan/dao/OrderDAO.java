@@ -4,21 +4,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import it.dan.model.Client;
-import it.dan.model.Item;
+import it.dan.model.Order;
 
-public class ItemDAO extends AbstractDAO<Item>
+public class OrderDAO extends AbstractDAO<Order>
 {
 	@Override
-	public void save(Item item)
+	public void save(Order order)
 	{
-		String sql = "INSERT INTO item(item_id, name, price) VALUES(?,?,?)";
+		String sql = "INSERT INTO order(client_id, item_id, amount) VALUES(?,?,?)";
 
 		try ( Connection connection = ConnectionToDB.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); )
 		{
-			statement.setString(1, item.getArticleId());
-			statement.setString(2, item.getName());
-			statement.setInt(3, item.getPrice());
+			statement.setString(1, order.getClientId());
+			statement.setString(2, order.getItemId());
+			statement.setInt(3, order.getAmount());
 
 			statement.executeUpdate();
 		}
@@ -28,15 +27,16 @@ public class ItemDAO extends AbstractDAO<Item>
 		}
 	}
 
-	@Override public void update(Item item)
+	@Override public void update(Order order)
 	{
-		String sql = "UPDATE item SET name=?, price=? WHERE item_id=?";
+		String sql = "UPDATE public.order SET client_id=?, item_id=?, amount=? WHERE order_id=?";
 
 		try ( Connection connection = ConnectionToDB.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); )
 		{
-			statement.setString(3, item.getArticleId());
-			statement.setString(1, item.getName());
-			statement.setInt(2, item.getPrice());
+			statement.setString(1, order.getClientId());
+			statement.setString(2, order.getItemId());
+			statement.setInt(3, order.getAmount());
+			statement.setInt(4, order.getOrderId());
 
 			statement.executeUpdate();
 		}
@@ -46,11 +46,11 @@ public class ItemDAO extends AbstractDAO<Item>
 		}
 	}
 
-	@Override public Item get(Object itemId)
+	@Override public Order get(Object orderId)
 	{
-		Item item = new Item();
+		Order order = new Order();
 
-		String sql = "SELECT * FROM item WHERE login='" + itemId + "'";
+		String sql = "SELECT * FROM order WHERE order_id='" + orderId + "'";
 
 		try (
 			Connection        connection  = ConnectionToDB.getConnection();
@@ -60,11 +60,12 @@ public class ItemDAO extends AbstractDAO<Item>
 		{
 			while ( rSet.next() )
 			{
-				item.setArticleId(rSet.getString("item_id"));
-				item.setName(rSet.getString("name"));
-				item.setPrice(rSet.getInt("price"));
+				order.setOrderId(rSet.getInt("order_id"));
+				order.setClientId(rSet.getString("client_id"));
+				order.setItemId(rSet.getString("item_id"));
+				order.setAmount(rSet.getInt("amount"));
 
-				return item;
+				return order;
 			}
 		}
 		catch ( SQLException e )
@@ -74,16 +75,16 @@ public class ItemDAO extends AbstractDAO<Item>
 		return null;
 	}
 
-	@Override public void delete(Object itemId)
+	@Override public void delete(Object orderId)
 	{
-		String sql = "DELETE * FROM item WHERE item_id=?";
+		String sql = "DELETE * FROM order WHERE order_id=?";
 
 		try (
 			Connection connection = ConnectionToDB.getConnection();
 			PreparedStatement statement = connection.prepareStatement(sql);
 			)
 		{
-			statement.setString(1, (String) itemId);
+			statement.setInt(1, (Integer) orderId);
 			statement.executeUpdate();
 		}
 		catch ( SQLException e )

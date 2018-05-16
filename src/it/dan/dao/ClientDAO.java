@@ -50,7 +50,8 @@ public class ClientDAO extends AbstractDAO<Client>
 		}
 	}
 
-	@Override public Client get(Object pk)
+	@Override
+	public Client get(Object pk)
 	{
 		Client client = new Client();
 
@@ -62,7 +63,6 @@ public class ClientDAO extends AbstractDAO<Client>
 			ResultSet rSet = statement.executeQuery();
 			)
 		{
-
 			while ( rSet.next() )
 			{
 				client.setLogin(rSet.getString("login"));
@@ -77,7 +77,7 @@ public class ClientDAO extends AbstractDAO<Client>
 		{
 			e.printStackTrace();
 		}
-		return client;
+		return null;
 	}
 
 	@Override public void delete(Object login)
