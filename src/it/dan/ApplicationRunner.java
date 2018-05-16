@@ -11,7 +11,7 @@ public class ApplicationRunner
         Client client = new Client();
 
         String name = "Alex";
-        client.setLogin("testLogin");
+        client.setLogin("testLogin2");
         client.setPassword("12345");
         client.setFirstName(name);
         client.setSecondName("Ignatenko");
@@ -19,5 +19,7 @@ public class ApplicationRunner
         ClientDAO clDao = new ClientDAO();
         clDao.save(client);
         clDao.delete(name);
+
+
     }
 }
