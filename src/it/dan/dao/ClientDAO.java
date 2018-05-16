@@ -33,6 +33,7 @@ public class ClientDAO
 		{
 			e.printStackTrace();
 		}
+
 		finally
 		{
 			ConnectionToDB.closeConnection(statement, connection);
@@ -105,15 +106,14 @@ public class ClientDAO
 
 	public static void delete(String login)
 	{
-		Connection connection = null;
-		PreparedStatement statement = null;
-
 		String sql = "DELETE * FROM client WHERE login=?";
 
 		try
+			(
+				Connection connection = ConnectionToDB.getConnection();
+				PreparedStatement statement = connection.prepareStatement(sql);
+			)
 		{
-			connection = ConnectionToDB.getConnection();
-			statement = connection.prepareStatement(sql);
 
 			statement.setString(1, login);
 
@@ -123,10 +123,7 @@ public class ClientDAO
 		{
 			e.printStackTrace();
 		}
-		finally
-		{
-			ConnectionToDB.closeConnection(statement, connection);
-		}
+
 	}
 
 }
