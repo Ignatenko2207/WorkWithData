@@ -10,11 +10,14 @@ public class ApplicationRunner
 
         Client client = new Client();
 
+        String name = "Alex";
         client.setLogin("testLogin");
         client.setPassword("12345");
-        client.setFirstName("Alex");
+        client.setFirstName(name);
         client.setSecondName("Ignatenko");
 
-        ClientDAO.save(client);
+        ClientDAO clDao = new ClientDAO();
+        clDao.save(client);
+        clDao.delete(name);
     }
 }
